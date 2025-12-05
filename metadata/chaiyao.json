@@ -1,0 +1,13 @@
+{
+  "name": "Chai Kiln Physical Asset #1",
+  "description": "Single Chai Kiln artifact represented by ChaiYaoNFT and fractionalized via CHAI.",
+  "image": "ipfs://<replace-with-asset-image-cid>/cover.jpg",
+  "external_url": "https://rwaoption.io/",
+  "attributes": [
+    { "trait_type": "asset_tag", "value": "CY-001" },
+    { "trait_type": "collection", "value": "Chai Kiln Physical" },
+    { "trait_type": "fraction_token", "value": "CHAI" },
+    { "trait_type": "custodian", "value": "<custodian name or address>" },
+    { "trait_type": "audit_hash", "value": "<sha256 of audit or appraisal>" }
+  ]
+}
