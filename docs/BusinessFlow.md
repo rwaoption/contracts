@@ -2,6 +2,14 @@
 
 本流程描述用户、Owner 在一个 NFT 拍卖预测中从创建到结算的全链路，以及价格/滑点的计算方式。
 
+## RWA NFT 概述与确权
+- NFT 类型：`ChaiYaoNFT`（单枚/小规模发行，映射一件实物藏品）。
+- 确权/映射：
+  - 每个 NFT 对应一件物理藏品，元数据包含 `assetTag` 与 `tokenURI`（可指向 IPFS/HTTPS 的图片、报告、链上证明等）。
+  - 绑定碎片化代币：`fragmentToken`（CHAI）一旦设置不可替换，记录 NFT 与代币价值锚定关系。
+  - 设备/UID 选项：`deviceSigner`（签名验证）与 `deviceUID`（明文 UID），可用于上传硬件心跳或 UID 报告，时间戳记录在 `deviceProofAt`。
+- 业务含义：每个 NFT 代表一件 RWA 藏品，预测市场围绕该 NFT 的下一场拍卖成交价；因此每个 NFT 拥有独立的 `closeTime` 与 `finalAuctionPrice`。
+
 ## 角色
 - Owner：配置拍卖、创建价格档、录入成交价、批量结算。
 - 用户：授权 CHAI给交易合约，选择价格档进行 buyYes/buyNo，下单时带滑点保护，结算后按份额领取池子中的 CHAI。
