@@ -109,6 +109,20 @@ async function main() {
   const tokenAddress = await token.getAddress();
   console.log("CHAIToken deployed at:", tokenAddress);
 
+  // Deploy prediction market (minStake configurable here).
+  const marketFactory = await ethers.getContractFactory("AuctionPricePredictionMarket");
+  const minStake = ethers.parseEther("0.01");
+  const market = await marketFactory.deploy(tokenAddress, minStake);
+  await market.waitForDeployment();
+  const marketAddress = await market.getAddress();
+  console.log("AuctionPricePredictionMarket deployed at:", marketAddress);
+
+  // (Optional) configure an auction for the freshly deployed NFT.
+  const closeTime = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60; // now + 7 days
+  const configTx = await market.configureAuction(nftAddress, closeTime);
+  await configTx.wait();
+  console.log(`Auction configured for NFT ${nftAddress} with closeTime ${closeTime}`);
+
   // Link fragment token on NFT (one-time)
   const linkTx = await nft.setFragmentToken(tokenAddress);
   await linkTx.wait();
@@ -127,6 +141,13 @@ async function main() {
     contractName: "CHAIToken",
     sourceName: "contracts/CHAIToken.sol",
     constructorArgs: { types: ["address"], values: [nftAddress] },
+  });
+
+  await verifyViaNodeReal({
+    contractAddress: marketAddress,
+    contractName: "AuctionPricePredictionMarket",
+    sourceName: "contracts/AuctionPricePredictionMarket.sol",
+    constructorArgs: { types: ["address", "uint256"], values: [tokenAddress, minStake] },
   });
 }
 

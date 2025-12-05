@@ -1,13 +1,17 @@
 {
-  "name": "Chai Kiln Physical Asset #1",
-  "description": "Single Chai Kiln artifact represented by ChaiYaoNFT and fractionalized via CHAI.",
+  "name": "Five Dynasties Chai Kiln Blue-Glazed Openwork Dragon Boat Fortune Child Pillow",
+  "description": "Five Dynasties Kiln Blue-Glazed Openwork Dragon Boat Fortune Child Pillow. This Later Zhou Official Kiln masterpiece, dated 13×17cm, is a world-shocking rarity that set a kiln auction record at 410 million HKD in the 2025 Hong Kong Autumn Auction. It is hailed as definitive proof of the 'Porcelain Emperor' kiln, renowned for its crystal-clear blue glaze, exquisite openwork carving of dragon boat and fortune child motifs, and the rare 'Great Zhou' base mark, symbolizing its exclusive royal provenance and pinnacle craftsmanship of the era.",
   "image": "ipfs://<replace-with-asset-image-cid>/cover.jpg",
   "external_url": "https://rwaoption.io/",
   "attributes": [
     { "trait_type": "asset_tag", "value": "CY-001" },
     { "trait_type": "collection", "value": "Chai Kiln Physical" },
     { "trait_type": "fraction_token", "value": "CHAI" },
-    { "trait_type": "custodian", "value": "<custodian name or address>" },
-    { "trait_type": "audit_hash", "value": "<sha256 of audit or appraisal>" }
+    { "trait_type": "audit_hash", "value": "<sha256 of audit or appraisal>" },
+    { "trait_type": "period", "value": "Five Dynasties (Later Zhou Period)" },
+    { "trait_type": "size", "value": "13×17" },
+    { "trait_type": "author", "value": "Later Zhou Official Kiln" },
+    { "trait_type": "craftsmanship", "value": "Blue-glazed color & Openwork carving" },
+    { "trait_type": "base_mark", "value": "Great Zhou" }
   ]
 }
