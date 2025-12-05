@@ -6,6 +6,8 @@ dotenv.config();
 
 const OPBNB_TESTNET_RPC = process.env.OPBNB_TESTNET_RPC || "https://opbnb-testnet-rpc.bnbchain.org";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || process.env.DEPLOYER_KEY || "";
+const OPBNB_SCAN_API_KEY =
+  process.env.OPBNB_SCAN_API_KEY || process.env.BSCSCAN_API_KEY || process.env.ETHERSCAN_API_KEY || "";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.21",
@@ -18,6 +20,20 @@ const config: HardhatUserConfig = {
       chainId: 5611,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
+  },
+  etherscan: {
+    // Etherscan API v2 prefers a single apiKey string.
+    apiKey: OPBNB_SCAN_API_KEY,
+    customChains: [
+      {
+        network: "opbnbTestnet",
+        chainId: 5611,
+        urls: {
+          apiURL: "https://api-opbnb-testnet.bscscan.com/api",
+          browserURL: "https://opbnb-testnet.bscscan.com",
+        },
+      },
+    ],
   },
 };
 
