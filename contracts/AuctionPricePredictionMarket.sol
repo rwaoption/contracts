@@ -48,6 +48,8 @@ contract AuctionPricePredictionMarket is Ownable, ReentrancyGuard {
     mapping(uint256 => mapping(address => uint256)) public yesSharesOf;
     mapping(uint256 => mapping(address => uint256)) public noSharesOf;
     mapping(uint256 => mapping(address => bool)) public claimed;
+    mapping(uint256 => uint256) public yesBettors; // unique addresses with yes shares
+    mapping(uint256 => uint256) public noBettors; // unique addresses with no shares
 
     error MarketClosed();
     error MarketResolved(uint256 marketId);
@@ -187,14 +189,25 @@ contract AuctionPricePredictionMarket is Ownable, ReentrancyGuard {
 
         chai.safeTransferFrom(msg.sender, address(this), amountIn);
 
+        bool isNew;
         if (isYes) {
+            if (yesSharesOf[marketId][msg.sender] == 0) isNew = true;
             market.yesStake = postYes;
             market.yesShares += sharesOut;
             yesSharesOf[marketId][msg.sender] += sharesOut;
         } else {
+            if (noSharesOf[marketId][msg.sender] == 0) isNew = true;
             market.noStake = noStake + amountIn;
             market.noShares += sharesOut;
             noSharesOf[marketId][msg.sender] += sharesOut;
+        }
+
+        if (isNew) {
+            if (isYes) {
+                yesBettors[marketId] += 1;
+            } else {
+                noBettors[marketId] += 1;
+            }
         }
 
         emit Buy(marketId, msg.sender, isYes, sharesOut, amountIn);
@@ -263,6 +276,19 @@ contract AuctionPricePredictionMarket is Ownable, ReentrancyGuard {
         }
         yesPrice = (yesStake * PRICE_SCALE) / total;
         noPrice = PRICE_SCALE - yesPrice;
+    }
+
+    /**
+     * @notice Return current stakes and unique bettor counts for a market.
+     */
+    function getMarketStats(uint256 marketId) external view returns (uint256 yesStake, uint256 noStake, uint256 yesVoters, uint256 noVoters, uint256 totalStake) {
+        Market memory m = markets[marketId];
+        if (m.nftAsset == address(0)) revert MarketNotFound();
+        yesStake = m.yesStake;
+        noStake = m.noStake;
+        totalStake = yesStake + noStake;
+        yesVoters = yesBettors[marketId];
+        noVoters = noBettors[marketId];
     }
 
     function _calcSharesOut(uint256 yesStake, uint256 noStake, bool isYes, uint256 amountIn) private pure returns (uint256 sharesOut, uint256 postYes) {

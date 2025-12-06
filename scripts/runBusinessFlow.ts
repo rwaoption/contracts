@@ -75,7 +75,7 @@ async function main() {
     }
     console.log("Created marketId:", marketId?.toString());
   } else {
-    marketId = existingIds[0];
+    marketId = existingIds[1];
     console.log("Using existing marketId:", marketId.toString());
   }
 
